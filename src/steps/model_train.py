@@ -13,7 +13,8 @@ def train_model(
     Y_test: pd.DataFrame,
 ) -> RegressorMixin:
     try:
-        trained_model = LinearRegressionModel.train(X_train, Y_train)
+        model = LinearRegressionModel()
+        trained_model = model.train(X_train, Y_train)
         logging.info("Model successfully trained")
         return trained_model
     except Exception as e:

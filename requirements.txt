@@ -1,0 +1,4 @@
+zenml==0.83.0
+scikit-learn
+pandas
+numpy

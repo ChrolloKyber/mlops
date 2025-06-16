@@ -3,21 +3,13 @@ import pandas as pd
 from zenml import step
 
 
-class IngestData:
-    def __init__(self, data_path: str):
-        self.data_path = data_path
-
-    def get_data(self):
-        logging.info(f"Ingesting data from {self.data_path}")
-        return pd.read_csv(self.data_path)
-
-
 @step
 def ingest_data(data_path: str) -> pd.DataFrame:
+    """Ingests the review data from a CSV file."""
     try:
-        ingest_data = IngestData(data_path)
-        df = ingest_data.get_data()
+        df = pd.read_csv(data_path)
+        print(f"Loaded data with {df.shape[0]} rows and {df.shape[1]} columns")
         return df
-    except Exception as e:
-        logging.error(f"Error while ingesting data: {e}")
+    except FileNotFoundError as e:
+        logging.error(f"File not found: {data_path}")
         raise e

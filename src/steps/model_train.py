@@ -1,22 +1,31 @@
-import logging
 import pandas as pd
+import numpy as np
+from typing import Tuple
+from sklearn.linear_model import LinearRegression
+
 from zenml import step
-from ..model.model_dev import LinearRegressionModel
-from sklearn.base import RegressorMixin
 
 
 @step
-def train_model(
-    X_train: pd.DataFrame,
-    X_test: pd.DataFrame,
-    Y_train: pd.DataFrame,
-    Y_test: pd.DataFrame,
-) -> RegressorMixin:
-    try:
-        model = LinearRegressionModel()
-        trained_model = model.train(X_train, Y_train)
-        logging.info("Model successfully trained")
-        return trained_model
-    except Exception as e:
-        logging.error(f"Error training model: {e}")
-        raise e
+def model_train(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    """Create features and split into X and y."""
+    # Select features for the model
+    features = [
+        "response_time_hours",
+        "creation_month",
+        "creation_day",
+        "creation_dayofweek",
+        "has_comment",
+        "comment_length",
+    ]
+
+    X = df[features].values
+    y = df["review_score"].values
+
+    print(f"Selected features: {features}")
+    print(f"Feature matrix shape: {X.shape}, Target vector shape: {y.shape}")
+
+    # Keep feature names for later use
+    feature_names = features
+
+    return X, y

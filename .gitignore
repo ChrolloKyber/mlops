@@ -1,3 +1,5 @@
 .venv
 .zen
 data
+*.pkl
+__pycache__
